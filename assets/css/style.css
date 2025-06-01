@@ -27,6 +27,13 @@ body {
     mix-blend-mode: difference;
 }
 
+/* 在触屏设备上隐藏自定义光标 */
+@media (hover: none) and (pointer: coarse) {
+    .cursor-outline {
+        display: none !important;
+    }
+}
+
 /* 加载动画 */
 .loading-screen {
     position: fixed;
