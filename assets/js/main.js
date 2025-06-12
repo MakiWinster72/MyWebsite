@@ -208,6 +208,15 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
+// 点击页面其他区域关闭菜单
+document.addEventListener('click', (e) => {
+    if (navLinks.classList.contains('active') && 
+        !navLinks.contains(e.target) && 
+        !menuToggle.contains(e.target)) {
+        toggleMenu();
+    }
+});
+
 // 修复链接的 noopener 问题
 document.querySelectorAll('a[target="_blank"]').forEach(link => {
     link.setAttribute('rel', 'noopener');
