@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V我50</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                           0 0 30px rgba(255, 255, 255, 0.6);
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #ccc;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .warning {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .qr-code img {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .qr-code img:hover {
+            transform: scale(1.05);
+        }
+
+        .qr-code::before {
+            content: '⚠️';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(-50%) rotate(0deg); }
+            25% { transform: translateX(-50%) rotate(-10deg); }
+            75% { transform: translateX(-50%) rotate(10deg); }
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .floating {
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating:nth-child(2) { top: 20%; right: 10%; animation-delay: 0.5s; }
+        .floating:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 1s; }
+        .floating:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 1.5s; }
+
+        .countdown {
+            font-size: 1.5rem;
+            color: #ff4444;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .qr-code img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">V我50</h1>
+        <p class="subtitle">支付宝往此短信电话号码支付50元即可删除监控录像</p>
+
+        <div class="warning">
+            ⚠️ 警告：您的录像已被监控，请立即支付50元删除监控录像
+        </div>
+
+        <div class="countdown" id="countdown">
+            剩余时间：00:20:00
+        </div>
+
+        <div style="text-align: center;">
+            <a href="" class="button">尽快支付</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 骗你的</p>
+    </div>
+
+    <!-- 浮动元素 -->
+    <div class="floating">⚠️</div>
+    <div class="floating">🚨</div>
+    <div class="floating">⚡</div>
+    <div class="floating">💀</div>
+
+    <script>
+        // 倒计时功能，初始为20分钟
+        function startCountdown(duration) {
+            let timer = duration, minutes, seconds;
+            const countdown = document.getElementById('countdown');
+            const interval = setInterval(() => {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+                countdown.textContent = `剩余时间：00:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    countdown.textContent = "倒计时已结束";
+                }
+            }, 1000);
+        }
+        // 20分钟 = 1200秒
+        startCountdown(20 * 60);
+
+        updateCountdown();
+    </script>
+</body>
+</html> 
