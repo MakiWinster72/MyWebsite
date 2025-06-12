@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maki Winster - 个人博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script type="module">
+        import BlurEffect from './assets/js/blur-effect.js';
+        
+        // 初始化模糊效果
+        const blurEffect = new BlurEffect({
+            threshold: 0.2,
+            blurAmount: 8,
+            transitionDuration: 0.8
+        });
+    </script>
+</head>
+<body>
+    <!-- 移除点状光标 -->
+    <!-- <div class="custom-cursor"></div> -->
+    <div class="cursor-outline"></div>
+
+    <!-- 加载屏幕 -->
+    <div class="loading-screen">
+        <div class="loading-circles">
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="loading-text">MakiWinster</div>
+    </div>
+
+    <!-- 3D背景 -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="navbar blur-element" data-blur-delay="0">
+        <div class="logo">
+            <img src="https://img.makis-life.cn//images/20250602121335690.png" alt="Maki Winster Logo">
+        </div>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-overlay"></div>
+        <ul class="nav-links">
+            <li><a href="https://blog.makis-life.cn"><i class="fas fa-blog"></i> 博客</a></li>
+            <li><a href="#tech"><i class="fas fa-code"></i> 技术分享</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> 联系我</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主页区域 -->
+    <section class="hero-section">
+        <img src="https://img.makis-life.cn//images/20250530065245456.png" alt="Maki Logo" class="hero-logo">
+        <h1 class="hero-title">MakiWinster</h1>
+        <p class="hero-subtitle">我在成为"万里挑一"的路上</p>
+        <p class="hero-description">源于互联网，感谢互联网，回馈互联网</p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary" onclick="scrollToSection('about')">
+                <span>了解更多</span>
+                <i class="fas fa-arrow-down"></i>
+            </button>
+            <button class="btn btn-secondary" onclick="scrollToSection('contact')">
+                <span>联系我</span>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- 建站理由区域 -->
+    <section id="about" class="content-section">
+        <h2 class="section-title blur-element" data-blur-delay="0">建站理由</h2>
+        <p class="section-subtitle blur-element" data-blur-delay="100">我的Website，我的博客</p>
+        
+        <div class="cards-container">
+            <div class="card blur-element" data-blur-delay="200">
+                <h3>🌍 互联网精神</h3>
+                <p>我在互联网上受益匪浅，得益于无私奉献的前辈，我才得以学会如此多的技术，走到今天。始终觉得在互联网上无私分享的网民才是真正的网民。所以搭建此站，以记录我的解答方案与个人经历和思考。</p>
+            </div>
+            
+            <div class="card blur-element" data-blur-delay="300">
+                <h3>🧠 记录个人思维</h3>
+                <p>思维是宝贵的财富，而记录是让思维沉淀的最好方式。记录思维的进化，记录成长档案。</p>
+            </div>
+            
+            <div class="card blur-element" data-blur-delay="400">
+                <h3>📸 生活记录</h3>
+                <p>工作之余，学习之余。我的旅游见闻、生活心得、日常时刻。</p>
+            </div>
+            
+            <div class="card blur-element" data-blur-delay="500">
+                <h3>🤝 回馈互联网社区</h3>
+                <p>分享技术文章、常见疑难杂题的问答。小白已经学到一点皮毛，现在轮到我来贡献自己的力量，搭建互联网大厦。希望能帮助一点在互联网路上茫然的小白。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我区域 -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <h2 class="section-title blur-element" data-blur-delay="0">联系我</h2>
+            <p class="section-subtitle blur-element" data-blur-delay="100">让我们一起交流、分享、成长，共同探索技术的无限可能</p>
+            
+            <div class="contact-grid">
+                <div class="contact-group blur-element" data-blur-delay="200">
+                    <h3><i class="fas fa-share-alt"></i> 联系方式</h3>
+                    <div class="contact-items-grid">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:makiiiiiiiho@gmail.com">makiiiiiiiho@gmail.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:MakiWinster@makis-life.cn">MakiWinster@makis-life.cn</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <a href="https://github.com/MakiWinster72" target="_blank" rel="noopener">GitHub: MakiWinster72</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-facebook"></i>
+                            <span>Facebook: MakiWinster</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-instagram"></i>
+                            <span>Instagram: MakiWinster</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-discord"></i>
+                            <span>Discord: MakiWinster</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-code"></i>
+                            <span>CSDN: Maki Winster</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer blur-element" data-blur-delay="0">
+        <h2>Maki's life</h2>
+        <p>Copyright © 2024-2025 all rights reserved · <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2024180652号-1</a></p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

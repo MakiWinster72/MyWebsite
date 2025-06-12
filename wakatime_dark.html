@@ -1,0 +1,1021 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编程记录 in 7 Days</title>
+    <!-- 基础样式库 -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- 动画库 -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- 图表和数据可视化 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- 动画和交互库 -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- 工具库 -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'HarmonyOS Sans SC';
+            src: url('https://cdn.jsdelivr.net/gh/irozhi/HarmonyOS-Sans/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --primary-color: #5F9EA0;
+            --secondary-color: #708090;
+            --accent-color: #E9967A;
+            --background-color: #FFFFFF;
+            --card-background: #FFFFFF;
+            --grid-color: rgba(0, 0, 0, 0.03);
+            --grid-size: 24px;
+            --text-primary: #2D3748;
+            --text-secondary: #4A5568;
+            --success-color: #48BB78;
+            --warning-color: #ED8936;
+            --danger-color: #F56565;
+            --info-color: #4299E1;
+            --border-color: #E2E8F0;
+            --header-bg: #F9FAFB;
+            --hover-bg: #F7FAFC;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --shadow-hover-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #81E6D9;
+            --secondary-color: #9F7AEA;
+            --accent-color: #FEB2B2;
+            --background-color: #1A202C;
+            --card-background: #2D3748;
+            --grid-color: rgba(255, 255, 255, 0.03);
+            --text-primary: #F7FAFC;
+            --text-secondary: #CBD5E0;
+            --success-color: #68D391;
+            --warning-color: #F6AD55;
+            --danger-color: #FC8181;
+            --info-color: #63B3ED;
+            --border-color: #4A5568;
+            --header-bg: #2D3748;
+            --hover-bg: #4A5568;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-hover-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* 全局样式 */
+        body {
+            font-family: 'HarmonyOS Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: var(--grid-size) var(--grid-size);
+            background-position: center center;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 卡片通用样式 */
+        .stat-card {
+            background: var(--card-background);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 20px var(--shadow-hover-color);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        /* 渐变文本 */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .gradient-text::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.5;
+            filter: blur(12px);
+            transform: scale(1.2);
+        }
+
+        /* 动画类 */
+        .hover-scale {
+            transition: transform 0.2s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* 进度条样式 */
+        .progress-bar {
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            max-width: 100%;
+        }
+
+        [data-theme="light"] .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 表格样式优化 */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .data-table th {
+            background-color: var(--header-bg);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .data-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--hover-bg);
+            transform: scale(1.01);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--card-background);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .md\:text-5xl {
+                font-size: 3rem;
+                line-height: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .data-table {
+                font-size: 0.875rem;
+            }
+
+            .data-table .combined-cell {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .data-table .name-text {
+                font-weight: 500;
+            }
+
+            .data-table .time-text {
+                color: var(--text-secondary);
+                font-size: 0.875rem;
+                display: block;
+            }
+
+            .hidden-mobile {
+                display: none !important;
+            }
+
+            .mobile-only {
+                display: table-cell !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+
+            .hidden-mobile {
+                display: table-cell !important;
+            }
+        }
+
+        /* 加载动画 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <!-- 加载动画 -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+        <!-- 顶部标题区域 -->
+        <header class="text-center mb-12" data-aos="fade-down">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 gradient-text" data-text="编程统计 in 7 Days" style="margin-top: 50px; font-size: clamp(1rem, 2vw + 1rem, 4rem) !important;">
+                编程统计 in 7 Days
+            </h1>
+            <p class="text-gray-600 text-lg">last week</p>
+        </header>
+        
+        <!-- 核心数据卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-semibold">总编程时间</h3>
+                        <p class="text-2xl font-bold text-blue-600 mt-2">5时46分</p>
+                        <p class="text-sm text-gray-400 mt-1">日均: 49分</p>
+                    </div>
+                    <div class="text-blue-500 floating">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-semibold">最高产出日</h3>
+                        <p class="text-2xl font-bold text-green-600 mt-2">2025-06-07</p>
+                        <p class="text-sm text-gray-400 mt-1">3时49分</p>
+                    </div>
+                    <div class="text-green-500 floating">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 66.1985180084121%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-semibold">主力语言</h3>
+                        <p class="text-2xl font-bold text-purple-600 mt-2">Markdown</p>
+                        <p class="text-sm text-gray-400 mt-1">46.6% of total</p>
+                    </div>
+                    <div class="text-purple-500 floating">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 46.65%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card p-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h3 class="text-gray-500 text-sm font-semibold">操作系统</h3>
+                        <p class="text-2xl font-bold text-indigo-600 mt-2">Windows</p>
+                        <p class="text-sm text-gray-400 mt-1">9 hrs 34 mins</p>
+                    </div>
+                    <div class="text-indigo-500 floating">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: 100.0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 语言分布 -->
+            <div class="stat-card p-6" data-aos="fade-right">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                    语言分布
+                </h3>
+                <div class="chart-container mb-4">
+                    <canvas id="languagesChart"></canvas>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="hidden-mobile">语言</th>
+                                <th class="hidden-mobile">时间</th>
+                                <th class="mobile-only">语言/时间</th>
+                                <th>占比</th>
+                                <th>趋势</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr class="hover-scale">
+                                <td class="hidden-mobile">Markdown</td>
+                                <td class="hidden-mobile">4时27分</td>
+                                <td class="mobile-only combined-cell">
+                                    <span class="name-text">Markdown</span>
+                                    <span class="time-text">4时27分</span>
+                                </td>
+                                <td>46.6%</td>
+                                <td class="w-1/3">
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" style="width: 46.65%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover-scale">
+                                <td class="hidden-mobile">Other</td>
+                                <td class="hidden-mobile">3时47分</td>
+                                <td class="mobile-only combined-cell">
+                                    <span class="name-text">Other</span>
+                                    <span class="time-text">3时47分</span>
+                                </td>
+                                <td>39.6%</td>
+                                <td class="w-1/3">
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" style="width: 39.64%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover-scale">
+                                <td class="hidden-mobile">HTML</td>
+                                <td class="hidden-mobile">45分</td>
+                                <td class="mobile-only combined-cell">
+                                    <span class="name-text">HTML</span>
+                                    <span class="time-text">45分</span>
+                                </td>
+                                <td>7.9%</td>
+                                <td class="w-1/3">
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" style="width: 7.94%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover-scale">
+                                <td class="hidden-mobile">TypeScript</td>
+                                <td class="hidden-mobile">22分</td>
+                                <td class="mobile-only combined-cell">
+                                    <span class="name-text">TypeScript</span>
+                                    <span class="time-text">22分</span>
+                                </td>
+                                <td>4.0%</td>
+                                <td class="w-1/3">
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" style="width: 3.97%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr class="hover-scale">
+                                <td class="hidden-mobile">Java</td>
+                                <td class="hidden-mobile">8分</td>
+                                <td class="mobile-only combined-cell">
+                                    <span class="name-text">Java</span>
+                                    <span class="time-text">8分</span>
+                                </td>
+                                <td>1.4%</td>
+                                <td class="w-1/3">
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" style="width: 1.4%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 编辑器使用情况 -->
+            <div class="stat-card p-6" data-aos="fade-left">
+                <div class="flex gap-2 mb-4">
+                    <button id="editorsTab" class="tab-button active">编辑器</button>
+                    <button id="systemsTab" class="tab-button">系统</button>
+                </div>
+                <div id="editorsContent">
+                    <div class="chart-container mb-4">
+                        <canvas id="editorsChart"></canvas>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="hidden-mobile">编辑器</th>
+                                    <th class="hidden-mobile">时间</th>
+                                    <th class="mobile-only">编辑器/时间</th>
+                                    <th>占比</th>
+                                    <th>趋势</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr class="hover-scale">
+                                    <td class="hidden-mobile">Obsidian</td>
+                                    <td class="hidden-mobile">4时27分</td>
+                                    <td class="mobile-only combined-cell">
+                                        <span class="name-text">Obsidian</span>
+                                        <span class="time-text">4时27分</span>
+                                    </td>
+                                    <td>46.6%</td>
+                                    <td class="w-1/3">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 46.61%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="hover-scale">
+                                    <td class="hidden-mobile">Word</td>
+                                    <td class="hidden-mobile">2时29分</td>
+                                    <td class="mobile-only combined-cell">
+                                        <span class="name-text">Word</span>
+                                        <span class="time-text">2时29分</span>
+                                    </td>
+                                    <td>26.0%</td>
+                                    <td class="w-1/3">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 25.96%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="hover-scale">
+                                    <td class="hidden-mobile">Excel</td>
+                                    <td class="hidden-mobile">1时7分</td>
+                                    <td class="mobile-only combined-cell">
+                                        <span class="name-text">Excel</span>
+                                        <span class="time-text">1时7分</span>
+                                    </td>
+                                    <td>11.7%</td>
+                                    <td class="w-1/3">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 11.67%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="hover-scale">
+                                    <td class="hidden-mobile">VS Code</td>
+                                    <td class="hidden-mobile">48分</td>
+                                    <td class="mobile-only combined-cell">
+                                        <span class="name-text">VS Code</span>
+                                        <span class="time-text">48分</span>
+                                    </td>
+                                    <td>8.5%</td>
+                                    <td class="w-1/3">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 8.5%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="hover-scale">
+                                    <td class="hidden-mobile">Cursor</td>
+                                    <td class="hidden-mobile">19分</td>
+                                    <td class="mobile-only combined-cell">
+                                        <span class="name-text">Cursor</span>
+                                        <span class="time-text">19分</span>
+                                    </td>
+                                    <td>3.5%</td>
+                                    <td class="w-1/3">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 3.46%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="systemsContent" class="hidden">
+                    <div class="chart-container mb-4">
+                        <canvas id="systemsChart"></canvas>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="hidden-mobile">System</th>
+                                    <th class="hidden-mobile">Time</th>
+                                    <th class="mobile-only">System/Time</th>
+                                    <th>Percentage</th>
+                                    <th>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr class="hover-scale">
+                                    <td class="hidden-mobile">Windows</td>
+                                    <td class="hidden-mobile">9 hrs 34 mins</td>
+                                    <td class="mobile-only combined-cell">
+                                        <span class="name-text">Windows</span>
+                                        <span class="time-text">9 hrs 34 mins</span>
+                                    </td>
+                                    <td>100.0%</td>
+                                    <td class="w-1/3">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 100.0%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目统计 -->
+        <div class="stat-card p-6" data-aos="fade-up">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                </svg>
+                项目统计
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="hidden-mobile">项目</th>
+                            <th class="hidden-mobile">时间</th>
+                            <th class="mobile-only">项目/时间</th>
+                            <th>占比</th>
+                            <th>进度</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr class="hover-scale">
+                            <td class="hidden-mobile">Unknown Project</td>
+                            <td class="hidden-mobile">8时11分</td>
+                            <td class="mobile-only combined-cell">
+                                <span class="name-text">Unknown Project</span>
+                                <span class="time-text">8时11分</span>
+                            </td>
+                            <td>85.7%</td>
+                            <td class="w-1/3">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" style="width: 85.65%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover-scale">
+                            <td class="hidden-mobile">vitepressD</td>
+                            <td class="hidden-mobile">40分</td>
+                            <td class="mobile-only combined-cell">
+                                <span class="name-text">vitepressD</span>
+                                <span class="time-text">40分</span>
+                            </td>
+                            <td>7.0%</td>
+                            <td class="w-1/3">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" style="width: 7.03%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover-scale">
+                            <td class="hidden-mobile">LetterWebsite</td>
+                            <td class="hidden-mobile">28分</td>
+                            <td class="mobile-only combined-cell">
+                                <span class="name-text">LetterWebsite</span>
+                                <span class="time-text">28分</span>
+                            </td>
+                            <td>4.9%</td>
+                            <td class="w-1/3">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" style="width: 4.93%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover-scale">
+                            <td class="hidden-mobile">responsibilityEx</td>
+                            <td class="hidden-mobile">12分</td>
+                            <td class="mobile-only combined-cell">
+                                <span class="name-text">responsibilityEx</span>
+                                <span class="time-text">12分</span>
+                            </td>
+                            <td>2.1%</td>
+                            <td class="w-1/3">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" style="width: 2.1%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover-scale">
+                            <td class="hidden-mobile">command</td>
+                            <td class="hidden-mobile">1分</td>
+                            <td class="mobile-only combined-cell">
+                                <span class="name-text">command</span>
+                                <span class="time-text">1分</span>
+                            </td>
+                            <td>0.3%</td>
+                            <td class="w-1/3">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" style="width: 0.29%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化动画库
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true
+        });
+
+        // 注册 Chart.js 插件
+        Chart.register(ChartDataLabels);
+        
+        // 配色方案
+        const chartColors = [
+            '#5F9EA0', '#E9967A', '#708090', '#DEB887', '#6B8E23',
+            '#8FBC8F', '#BC8F8F', '#F4A460', '#DAA520', '#CD853F'
+        ];
+
+        // Chart.js 通用配置
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        weight: 'bold',
+                        size: 11
+                    },
+                    formatter: (value) => {
+                        if (value < 5) return '';
+                        return value.toFixed(1) + '%';
+                    }
+                },
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#fff' : '#4A5568',
+                        font: {
+                            family: "'HarmonyOS Sans SC', sans-serif",
+                            size: 12
+                        },
+                        padding: 20,
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map((label, i) => {
+                                    const meta = chart.getDatasetMeta(0);
+                                    const style = meta.controller.getStyle(i);
+                                    const text = `${label} (${data.datasets[0].data[i].toFixed(1)}%)`;
+                                    return {
+                                        text: text,
+                                        fillStyle: style.backgroundColor,
+                                        strokeStyle: style.backgroundColor,
+                                        lineWidth: 0,
+                                        hidden: !chart.getDataVisibility(i),
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            return `${label}: ${value.toFixed(1)}%`;
+                        }
+                    },
+                    bodyColor: document.documentElement.getAttribute('data-theme') === 'dark' ? '#fff' : '#4A5568'
+                }
+            }
+        };
+
+        // 语言分布图表
+        new Chart(document.getElementById('languagesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ["Markdown","Other","HTML","TypeScript","Java",],
+                datasets: [{
+                    data: [46.65,39.64,7.94,3.97,1.4,],
+                    backgroundColor: chartColors,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                ...commonOptions,
+                cutout: '60%',
+                plugins: {
+                    ...commonOptions.plugins,
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#F7FAFC' : '#4A5568',
+                            font: {
+                                family: "'HarmonyOS Sans SC', sans-serif",
+                                size: 12
+                            },
+                            padding: 20
+                        }
+                    },
+                    datalabels: {
+                        ...commonOptions.plugins.datalabels,
+                        anchor: 'center',
+                        backgroundColor: null,
+                        borderWidth: 0
+                    }
+                }
+            }
+        });
+
+        // 编辑器使用统计图表
+        const editorsChart = new Chart(document.getElementById('editorsChart'), {
+            type: 'bar',
+            data: {
+                labels: ["Obsidian","Word","Excel","VS Code","Cursor",],
+                datasets: [{
+                    label: 'Usage (%)',
+                    data: [46.61,25.96,11.67,8.5,3.46,],
+                    backgroundColor: chartColors[0],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                ...commonOptions,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'right',
+                        color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#CBD5E0' : '#4A5568',
+                        formatter: (value) => `${value.toFixed(1)}%`
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false,
+                            color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#4A5568' : '#E2E8F0'
+                        },
+                        ticks: {
+                            color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#CBD5E0' : '#4A5568',
+                            callback: value => value + '%'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#CBD5E0' : '#4A5568'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 系统使用统计图表
+        const systemsChart = new Chart(document.getElementById('systemsChart'), {
+            type: 'pie',
+            data: {
+                labels: ["Windows",],
+                datasets: [{
+                    data: [100.0,],
+                    backgroundColor: chartColors,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    datalabels: {
+                        ...commonOptions.plugins.datalabels,
+                        anchor: 'center'
+                    }
+                }
+            }
+        });
+
+        // 标签页切换逻辑
+        document.getElementById('editorsTab').addEventListener('click', function() {
+            document.getElementById('editorsContent').classList.remove('hidden');
+            document.getElementById('systemsContent').classList.add('hidden');
+            this.classList.add('active');
+            document.getElementById('systemsTab').classList.remove('active');
+            editorsChart.update();
+        });
+
+        document.getElementById('systemsTab').addEventListener('click', function() {
+            document.getElementById('systemsContent').classList.remove('hidden');
+            document.getElementById('editorsContent').classList.add('hidden');
+            this.classList.add('active');
+            document.getElementById('editorsTab').classList.remove('active');
+            systemsChart.update();
+        });
+
+        // GSAP 动画
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // 进度条动画
+        gsap.utils.toArray('.progress-bar-fill').forEach(bar => {
+            gsap.fromTo(bar,
+                { width: '0%' },
+                {
+                    width: bar.style.width,
+                    duration: 1.5,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: bar,
+                        start: 'top bottom-=100px',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+
+        // 移除加载动画
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            gsap.to(loadingOverlay, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => loadingOverlay.remove()
+            });
+        });
+    </script>
+</body>
+</html>
+    
